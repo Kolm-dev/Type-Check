@@ -11,7 +11,7 @@ const TypeStatistics = () => {
 			<ProgressBar
 				variant="success"
 				animated
-				label={`${progress.toFixed()}%`}
+				label={`${progress.toFixed(2)}%`}
 				now={progress}
 			/>
 			<div className="typeStatistics">

@@ -1,7 +1,6 @@
 import React from "react"
-const fontSizeData = {
-	fontSize: "10px",
-}
+import "./styles/CapsLockIndicator.scss"
+
 const CapsLockIndicator = () => {
 	const [capsLock, setCapsLock] = React.useState<boolean>()
 
@@ -17,15 +16,16 @@ const CapsLockIndicator = () => {
 	}, [])
 
 	if (capsLock === undefined) {
-		return <p style={fontSizeData}>Press CapsLock</p>
+		return <p className="capsIndicator capsIndicatorUnknown">Press CapsLock</p>
 	}
 
 	return (
-		<p style={{margin: "5px 2px 0", ...fontSizeData}}>
-			CapsLock
-			<span style={{...fontSizeData, color: capsLock ? "red" : "green"}}>
-				{capsLock ? " OFF" : " ON"}
-			</span>
+		<p className="capsIndicator">
+			<span
+				className={`capsIndicatorDot ${capsLock ? "capsIndicatorDotOn" : ""}`}
+			/>
+			<span>CapsLock</span>
+			<span className="capsIndicatorStatus">{capsLock ? "ON" : "OFF"}</span>
 		</p>
 	)
 }

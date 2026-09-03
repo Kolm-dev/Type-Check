@@ -1,14 +1,13 @@
 import React, {useEffect, useState} from "react"
 import "./styles/Input.scss"
 import {useAppDispatch, useAppSelector} from "../hooks/hooks"
-import CapsLockIndicator from "./CapsLockIndicator"
 import {Input as InputText} from "semantic-ui-react"
 import {
-	updateProgress,
 	inputHandler,
 	updateCountPerMinute,
+	finishTyping,
 } from "../store/typer.slice"
-import {debounce} from "lodash"
+import {saveTypingResult} from "../utils/results"
 
 type TypeInput = {
 	setPrintedText: (value: string) => void
@@ -20,33 +19,40 @@ const Input = ({setPrintedText, text}: TypeInput) => {
 
 	const dispatch = useAppDispatch()
 	const [inputedCount, setInputedCount] = useState(0)
+	const [inputValue, setInputValue] = useState("")
+	const inputRef = React.useRef<InputText>(null)
+
 	const handlerCountCh = () => {
 		const elapsedTime = (Date.now() - timeStart) / 1000
+		if (!status || elapsedTime <= 0) {
+			return
+		}
+
 		const cpr = (inputedCount / elapsedTime) * 60
 		dispatch(updateCountPerMinute(cpr))
 	}
 
-	const calculateProgress = () => {
-		debounce(() => {
-			dispatch(updateProgress())
-		}, 800)()
-	}
-
 	useEffect(() => {
 		handlerCountCh()
-	}, [time * 1.5])
+	}, [dispatch, inputedCount, status, time, timeStart])
+
+	useEffect(() => {
+		setInputValue("")
+		setInputedCount(0)
+		setPrintedText("")
+		inputRef.current?.focus()
+	}, [text, setPrintedText])
 
 	const inputOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const value = e.target.value
-		if (value) {
-			debounce(
-				() => dispatch(inputHandler(value.charAt(value.length - 1))),
-				500
-			)()
-			calculateProgress()
-		}
-		debounce(() => setInputedCount(value.length), 1000)()
-		handlerCountCh()
+		const elapsedTime = (Date.now() - timeStart) / 1000
+		const charactersPerMinute =
+			status && elapsedTime > 0 ? (value.length / elapsedTime) * 60 : 0
+
+		setInputValue(value)
+		setInputedCount(value.length)
+		dispatch(inputHandler(value))
+		dispatch(updateCountPerMinute(charactersPerMinute))
 
 		let newPrintedText = ""
 		for (let i = 0; i < text.length; i++) {
@@ -61,15 +67,26 @@ const Input = ({setPrintedText, text}: TypeInput) => {
 			}
 		}
 		setPrintedText(newPrintedText)
+
+		if (value.length >= text.length) {
+			dispatch(finishTyping())
+			saveTypingResult({
+				time: Math.ceil(elapsedTime),
+				charactersPerMinute,
+			})
+		}
 	}
 	return (
 		<div className="wrapperInput">
-			<CapsLockIndicator />
 			<InputText
+				ref={inputRef}
 				className="textInput"
 				onChange={inputOnChange}
+				value={inputValue}
 				type="text"
 				size="massive"
+				placeholder="Start typing..."
+				maxLength={text.length}
 				disabled={!status}
 			/>
 		</div>

@@ -4,20 +4,27 @@ $icon2: "/time.svg";
 @mixin icon-before($icon) {
 	content: "";
 	display: inline-block;
-	width: 15px;
+	width: 1.1em;
 	position: relative;
-	top: 5px;
-	height: 15px;
-	margin-right: 3px;
+	top: 0.18em;
+	height: 1.1em;
+	margin-right: 0.35em;
 	background: url("#{$icon}") no-repeat center center;
 	background-size: cover;
 }
 
 .typeStatistics {
-	font-size: 12px;
+	display: flex;
+	justify-content: center;
+	gap: 18px;
+	font-size: 18px;
+	color: #3e4c59;
 	.statisticsItem {
 		position: relative;
-		padding: 5px;
+		padding: 8px 12px;
+		border-radius: 8px;
+		background: #eef7f8;
+		white-space: nowrap;
 	}
 
 	.statisticsItem:nth-child(1)::before {
@@ -25,5 +32,107 @@ $icon2: "/time.svg";
 	}
 	.statisticsItem:nth-child(2)::before {
 		@include icon-before($icon2);
+	}
+}
+
+.typeStatisticsWrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	width: 100%;
+}
+
+.typeStatisticsWrapper .progress {
+	height: 26px;
+	border-radius: 8px;
+	background-color: #dde7ed;
+	font-size: 14px;
+	overflow: hidden;
+}
+
+.typeStatisticsWrapper .progress-bar {
+	background-color: #2fb344;
+	transition: width 0.25s ease;
+}
+
+@media (min-width: 1200px) {
+	.typeStatistics {
+		font-size: 24px;
+	}
+
+	.typeStatisticsWrapper {
+		gap: 18px;
+	}
+
+	.typeStatisticsWrapper .progress {
+		height: 34px;
+		font-size: 18px;
+	}
+}
+
+@media (max-width: 900px) and (orientation: landscape) {
+	.typeStatistics {
+		gap: 10px;
+		font-size: 13px;
+
+		.statisticsItem {
+			padding: 2px 4px;
+			border-radius: 6px;
+		}
+	}
+
+	.typeStatisticsWrapper {
+		gap: 6px;
+	}
+
+	.typeStatisticsWrapper .progress {
+		height: 16px;
+		border-radius: 6px;
+		font-size: 10px;
+	}
+}
+
+@media (max-width: 576px) {
+	.typeStatistics {
+		flex-wrap: wrap;
+		gap: 6px;
+		font-size: 12px;
+
+		.statisticsItem {
+			flex: 1 1 120px;
+			min-width: 0;
+			padding: 6px 8px;
+			border-radius: 6px;
+		}
+	}
+
+	.typeStatisticsWrapper {
+		gap: 8px;
+	}
+
+	.typeStatisticsWrapper .progress {
+		height: 18px;
+		font-size: 10px;
+	}
+}
+
+@media (max-width: 360px) {
+	.typeStatistics {
+		gap: 4px;
+		font-size: 10px;
+
+		.statisticsItem {
+			flex-basis: 100px;
+			padding: 4px 5px;
+		}
+	}
+
+	.typeStatisticsWrapper {
+		gap: 5px;
+	}
+
+	.typeStatisticsWrapper .progress {
+		height: 14px;
+		font-size: 8px;
 	}
 }

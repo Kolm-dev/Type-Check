@@ -1,0 +1,97 @@
+.wrapperInput {
+	width: 100%;
+	margin-top: 6px;
+	padding: 10px;
+	border-radius: 8px;
+	background: #edf4f7;
+}
+
+.textInput {
+	width: 100%;
+	display: block;
+}
+
+.textInput.ui.input > input {
+	width: 100%;
+	min-height: 64px;
+	border: none;
+	outline: none;
+	border-radius: 8px;
+	background: #fbfdfe;
+	color: #1f2933;
+	caret-color: #17a2b8;
+	font-size: 26px;
+	font-weight: 600;
+	line-height: 1.25;
+	padding: 16px 20px;
+	box-shadow:
+		inset 0 0 0 1px rgba(255, 255, 255, 0.78),
+		0 10px 24px rgba(31, 41, 51, 0.1);
+	transition:
+		background 0.15s ease,
+		box-shadow 0.15s ease;
+}
+
+.textInput.ui.input > input:focus {
+	border: none;
+	outline: none;
+	background: #ffffff;
+	box-shadow:
+		inset 0 0 0 2px rgba(23, 162, 184, 0.46),
+		0 14px 32px rgba(31, 41, 51, 0.16);
+}
+
+.textInput.ui.input > input::placeholder {
+	color: #9aa5b1;
+	font-weight: 500;
+}
+
+.textInput.ui.disabled.input > input,
+.textInput.ui.input > input:disabled {
+	background: #dde7ed;
+	color: #7b8794;
+	opacity: 1;
+	box-shadow: inset 0 0 0 1px rgba(31, 41, 51, 0.06);
+}
+
+@media (min-width: 1200px) {
+	.wrapperInput {
+		margin-top: 10px;
+		padding: 14px;
+	}
+
+	.textInput.ui.input > input {
+		min-height: 78px;
+		padding: 18px 24px;
+		font-size: 32px;
+	}
+}
+
+@media (max-width: 767px), (max-height: 500px) and (pointer: coarse) {
+	.wrapperInput {
+		position: relative;
+		width: auto;
+		margin-top: 0;
+		padding: 0;
+		background: transparent;
+	}
+
+	.textInput {
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		opacity: 0;
+	}
+
+	.textInput.ui.input > input {
+		width: 1px;
+		min-height: 1px;
+		height: 1px;
+		padding: 0;
+		font-size: 16px;
+		box-shadow: none;
+	}
+}
