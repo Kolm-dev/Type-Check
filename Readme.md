@@ -21,15 +21,15 @@ For detailed version 2 changes, see [Patch Notes](./PATCH_NOTES.md).
 
 ## Screenshots
 
-### Speed Test On Desktop
+### On Desktop
 
 ![Speed Test Desktop](./public/screenshots/speed-test-desktop.png)
 
-### Results On Desktop
+### On Desktop
 
 ![Results Desktop](./public/screenshots/results-desktop.png)
 
-### Speed Test On Mobile
+### On Mobile
 
 ![Speed Test Mobile](./public/screenshots/speed-test-mobile.png)
 

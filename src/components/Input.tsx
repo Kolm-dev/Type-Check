@@ -14,13 +14,21 @@ type TypeInput = {
 	text: string
 }
 
-const Input = ({setPrintedText, text}: TypeInput) => {
+export type InputHandle = {
+	focus: () => void
+}
+
+const Input = React.forwardRef<InputHandle, TypeInput>(({setPrintedText, text}, ref) => {
 	const {status, time, timeStart} = useAppSelector((state) => state.typer)
 
 	const dispatch = useAppDispatch()
 	const [inputedCount, setInputedCount] = useState(0)
 	const [inputValue, setInputValue] = useState("")
 	const inputRef = React.useRef<InputText>(null)
+
+	React.useImperativeHandle(ref, () => ({
+		focus: () => inputRef.current?.focus(),
+	}))
 
 	const handlerCountCh = () => {
 		const elapsedTime = (Date.now() - timeStart) / 1000
@@ -91,6 +99,8 @@ const Input = ({setPrintedText, text}: TypeInput) => {
 			/>
 		</div>
 	)
-}
+})
+
+Input.displayName = "Input"
 
 export default Input

@@ -1,7 +1,7 @@
 import React from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/hooks";
 import CapsLockIndicator from "./CapsLockIndicator";
-import Input from "./Input";
+import Input, { InputHandle } from "./Input";
 import TextCharacters from "./TextCharacters";
 import TypeStatistics from "./TypeStatistics";
 import { startTyping, stopTyping, updateTimeDuration } from "../store/typer.slice";
@@ -14,6 +14,7 @@ const Tester: React.FC = () => {
   const inputText = useAppSelector(state => state.typer.inputText);
   const dispatch = useAppDispatch();
   const textForTestRef = React.useRef<HTMLParagraphElement>(null);
+  const inputRef = React.useRef<InputHandle>(null);
 
   React.useEffect(() => {
     if (!status) {
@@ -22,7 +23,7 @@ const Tester: React.FC = () => {
 
     const intervalId = window.setInterval(() => {
       dispatch(updateTimeDuration());
-    }, 1000);
+    }, 500);
 
     return () => {
       window.clearInterval(intervalId);
@@ -40,6 +41,21 @@ const Tester: React.FC = () => {
 
   const startButtonText = text ? "Restart" : "Start";
 
+  const keepKeyboardOpen = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (!status) {
+      return;
+    }
+
+    const target = event.target as HTMLElement;
+    if (target.closest("button")) {
+      return;
+    }
+
+    event.preventDefault();
+    inputRef.current?.focus();
+    window.setTimeout(() => inputRef.current?.focus(), 50);
+  };
+
   React.useEffect(() => {
     const textElement = textForTestRef.current;
     if (!textElement || !text.length) {
@@ -52,7 +68,10 @@ const Tester: React.FC = () => {
   }, [inputText.length, text.length]);
 
   return (
-    <div className={`testWrapper ${!text ? "testWrapperEmpty" : ""}`}>
+    <div
+      className={`testWrapper ${!text ? "testWrapperEmpty" : ""}`}
+      onPointerDown={keepKeyboardOpen}
+    >
       {text && (
         <>
           <p
@@ -86,6 +105,7 @@ const Tester: React.FC = () => {
       </div>
       {text && (
         <Input
+          ref={inputRef}
           text={text}
           setPrintedText={setPrintedText}
         />

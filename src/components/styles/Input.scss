@@ -69,7 +69,10 @@
 
 @media (max-width: 767px), (max-height: 500px) and (pointer: coarse) {
 	.wrapperInput {
-		position: relative;
+		position: fixed;
+		top: 0;
+		left: 0;
+		z-index: 1;
 		width: auto;
 		margin-top: 0;
 		padding: 0;
@@ -77,9 +80,9 @@
 	}
 
 	.textInput {
-		position: absolute;
-		right: 0;
-		bottom: 0;
+		position: fixed;
+		top: 0;
+		left: 0;
 		width: 1px;
 		height: 1px;
 		overflow: hidden;
@@ -87,6 +90,9 @@
 	}
 
 	.textInput.ui.input > input {
+		position: fixed;
+		top: 0;
+		left: 0;
 		width: 1px;
 		min-height: 1px;
 		height: 1px;
